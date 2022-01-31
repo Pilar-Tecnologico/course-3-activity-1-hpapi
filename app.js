@@ -1,26 +1,45 @@
-//Change the version of this program in package.json to 1.1.0
-//For all the excersices Postman or Thunder Client is recommended.
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
-const ApiData = require('./data.json');//should require the data.json file
+const ApiData = require("./data.json");
 app.use(express.json());
 
-app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+app.get("/spells/:id", (req, res) => {
+  const { id } = req.params;
+  const spell = ApiData.spells.find((ele) => ele.id === Number(id));
+  if (spell) {
+    res.status(200).json(spell);
+  } else {
+    res.status(404).json({ spell: "unknown" });
+  }
 });
 
-app.get('/characters', (req, res) => {
-    //Should use query params to filter the hogwartsHouse and hogwartsStudent
+app.get("/characters", (req, res) => {
+  const hh = req.query.hh;
+  let response = [];
+  if (hh) {
+    response = ApiData.characters.filter(
+      (ele) => ele.hogwartsStudent && ele.hogwartsHouse === hh
+    );
+  } else {
+    response = ApiData.characters.filter((ele) => ele.hogwartsStudent);
+  }
+  if (response.length > 0) {
+    res.status(200).json(response);
+  } else {
+    res.status(404).json({ House: hh, characters: "Not Found" });
+  }
 });
 
-app.post('/spells', (req, res) => {
-    //Should recive spell data from request body.
-    //Should validate that the properities "id", "spell" and "use" are present in the body
-    //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
-    //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+app.post("/spells", (req, res) => {
+  const { id, spell, use } = req.body;
+  if (!id || !spell || !use) {
+    res.status(400).json({ operation: "add spell", status: "refused" });
+  } else {
+    res.status(200).json({ operation: "add spell", status: "accepted" });
+  }
 });
 
 app.listen(port, () => {
-    console.log(`Express server started at port ${port}`)
+  console.log(`Express server started at port ${port}`);
 });
