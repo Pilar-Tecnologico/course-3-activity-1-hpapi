@@ -11,7 +11,6 @@ app.get("/spells/:id", (req, res) => {
   console.log(id);
   if (id > 0 && id < 73) {
     const spell = ApiData.spells.find((spell) => spell.id === id);
-    console.log(spell);
     res.status(200).json(spell);
   } else {
     res.status(404).json({ message: "id not found" });
@@ -20,6 +19,37 @@ app.get("/spells/:id", (req, res) => {
 });
 
 app.get("/characters", (req, res) => {
+  const { house, student } = req.query;
+
+  if (house && student) {
+    const isStudent = student === "true" ? true : false;
+    //find student
+    if (isStudent) {
+      const charaStudent = ApiData.characters.filter(
+        (student) =>
+          student.hogwartsHouse === house && student.hogwartsStudent === true
+      );
+      charaStudent.length < 1
+        ? res.status(200).json({ message: "characters not found" })
+        : res.status(200).json(charaStudent);
+    } else {
+      // find no student
+      const charaNoStudent = ApiData.characters.filter(
+        (student) =>
+          student.hogwartsStudent === false && student.hogwartsHouse === house
+      );
+
+      charaNoStudent.length < 1
+        ? res.status(200).json({ message: "characters not found" })
+        : res.status(200).json(charaNoStudent);
+    }
+  } else {
+    res.status(400).json({
+      code: "bad_request",
+      message: "bad query params",
+      severity: "low",
+    });
+  }
   //Should use query params to filter the hogwartsHouse and hogwartsStudent
 });
 
