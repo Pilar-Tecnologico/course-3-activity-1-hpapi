@@ -54,6 +54,12 @@ app.get("/characters", (req, res) => {
 });
 
 app.post("/spells", (req, res) => {
+  const { id, spell, use } = req.body;
+  if (typeof id === "number" && spell && use) {
+    res.status(200).json({ operation: "add spell", status: "accepted" });
+  } else {
+    res.status(400).json({ operation: "add spell", status: "refused" });
+  }
   //Should recive spell data from request body.
   //Should validate that the properities "id", "spell" and "use" are present in the body
   //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
