@@ -10,14 +10,22 @@ console.log(ApiData.spells[0].id);
 
 app.get("/spells/:id", (req, res) => {
   //should respond with the spell with the corresponding id value from data.json
-  const spell = ApiData.spells.find(e => `${e.id}` === req.params.id)
+  const spell = ApiData.spells.find((e) => `${e.id}` === req.params.id);
   res.send(`id:${spell.id}\n
             spell:${spell.spell}\n
             use:${spell.use}`);
 });
 
-app.get("/characters", (req, res) => {
+app.get("/characters/:nickname", (req, res) => {
   //Should use query params to filter the hogwartsHouse and hogwartsStudent
+  const nickname = ApiData.characters.filter(
+    (e) => `${e.nickname}` === req.params.nickname
+  )[0];
+	console.log(nickname);
+  res.send(`
+			  character: ${nickname.character}</br>
+			  isHogwartsStudent:${nickname.hogwartsStudent}</br>
+			  hogwartsHouse:${nickname.hogwartsHouse}</br>`);
 });
 
 app.post("/spells", (req, res) => {
