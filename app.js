@@ -11,7 +11,7 @@ app.get('/spells/:id', (req, res) => {
     const { id } = req.params;
     const regex = /^[0-9]{1,2}$/
     if(regex.test(id)){
-        const response = harryPotterApi.spells.find((spell) => Number(id) === spell.id);
+        const response = harryPotterApi.spells.find(spell => Number(id) === spell.id);
         if(!response){
             res.status(404);
         }
@@ -29,6 +29,20 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const { hogwartsStudent, hogwartsHouse } = req.query;
+    
+    if(hogwartsStudent && hogwartsHouse){
+        const response = harryPotterApi.characters.filter(characters =>
+        hogwartsHouse === characters.hogwartsHouse && 
+        Boolean(hogwartsStudent) === characters.hogwartsStudent)
+        res.json(response)
+    } else{
+        res.status(400).json({
+            code: 'bad_request',
+            menssage: 'Invalid request, check your query params',
+            severity: 'LOW'
+        });
+    }
 });
 
 app.post('/spells', (req, res) => {
