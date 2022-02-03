@@ -50,6 +50,14 @@ app.post('/spells', (req, res) => {
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+
+    const { id, spell, use } = req.body;
+    if (id && spell && use){
+        res.status(200).json({"operation": "add spell", "status": "accepted"});
+    } else{
+        res.status(400).json({"operation": "add spell", "status": "refused"});
+    }
+
 });
 
 app.listen(port, () => {
