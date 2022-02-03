@@ -3,12 +3,29 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const ApiData = require('./data.json');//should require the data.json file
+const harryPotterApi = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+    //should respond with the spell with the corresponding id value from data.json 
+    const { id } = req.params;
+    const regex = /^[0-9]{1,2}$/
+    if(regex.test(id)){
+        const response = harryPotterApi.spells.find((spell) => Number(id) === spell.id);
+        if(!response){
+            res.status(404);
+        }
+        res.json(response);
+
+    } else{
+        res.status(400).json({
+            code: 'bad_request',
+            menssage: 'Invalid request, check that the ID is valid',
+            severity: 'LOW'
+        });
+    }
 });
+
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
