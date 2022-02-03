@@ -5,9 +5,22 @@ const app = express();
 const port = process.env.PORT || 3000;
 const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
+app.get('/', (req, res) =>{
+    res.json (ApiData);
+});
 
-app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+
+//should respond with the spell with the corresponding id value from data.json 
+app.get('/data/:id', (req, res) => {
+    const id = Number(req.params.id);
+  console.log(id);
+  if (id > 0 && id < 73) {
+    const data = ApiData.data.find((data) => data.id === id);
+    res.status(200).json(data);
+  } else {
+    res.status(404).json({ message: "id not found" });
+  }
+     
 });
 
 app.get('/characters', (req, res) => {
