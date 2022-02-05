@@ -18,7 +18,7 @@ app.get("/spells/:id", (req, res) => {
       severity: "LOW",
     });
   }
-  res.status(200).json(response);
+  res.status(200).json(response)
 });
 
 app.get("/characters", (req, res) => {
