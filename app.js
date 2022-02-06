@@ -1,9 +1,18 @@
 //Change the version of this program in package.json to 1.1.0
 //For all the excersices Postman or Thunder Client is recommended.
 const express = require("express");
+const ApiData = require("./data.json"); //should require the data.json file
+const Joi = require("joi");
+
 const app = express();
 const port = process.env.PORT || 3000;
-const ApiData = require("./data.json"); //should require the data.json file
+
+const schema = Joi.object({
+  id: Joi.number().required(),
+  spell: Joi.string().required(),
+  use: Joi.string().required(),
+});
+
 app.use(express.json());
 
 app.get("/spells/:id", (req, res) => {
@@ -30,8 +39,19 @@ app.get("/characters", (req, res) => {
 });
 
 app.post("/spells", (req, res) => {
-  console.log(req.body);
-  res.send(req.body);
+  const data = req.body;
+  try {
+    Joi.assert(data, schema);
+    res.status(200).json({
+      operation: "add spell",
+      status: "accepted",
+    });
+  } catch (error) {
+    res.status(400).json({
+      operation: "add spell",
+      status: "refused",
+    });
+  }
 
   //Should recive spell data from request body.
   //Should validate that the properities "id", "spell" and "use" are present in the body
