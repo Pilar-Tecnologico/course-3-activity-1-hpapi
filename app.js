@@ -12,8 +12,8 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     const { house, student } = req.query;
-    const result = student == "true"
-    const response = data.characters.filter((charact) => house === charact.hogwartsHouse && result === charact.hogwartsStudent);
+    const studentStatus = student == "true"
+    const response = data.characters.filter((charact) => house === charact.hogwartsHouse && studentStatus === charact.hogwartsStudent);
     res.json(response);
 });
 
@@ -33,5 +33,5 @@ app.post('/spells', (req, res) => {
 });
 
 app.listen(port, () => {
-        console.log(`Express server started at port ${port}`)
+    console.log(`Express server started at port ${port}`)
 });

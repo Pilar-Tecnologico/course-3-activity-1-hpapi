@@ -1,9 +1,9 @@
 {
     "spells": [
       {
-          "id": 1,
-          "spell": "Accio",
-          "use": "Summoning charm"
+        "id": 1,
+        "spell": "Accio",
+        "use": "Summoning charm"
       },
       {
         "id": 2,
