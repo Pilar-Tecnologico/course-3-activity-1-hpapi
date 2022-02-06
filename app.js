@@ -7,7 +7,10 @@ const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+    //should respond with the spell with the corresponding id value from data.json 
+    const id = req.params.id
+    const Spells = ApiData.spells.find((spell)=>(spell.id == id))   
+    res.send(Spells)
 });
 
 app.get('/characters', (req, res) => {
