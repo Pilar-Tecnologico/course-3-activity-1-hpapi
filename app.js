@@ -8,6 +8,9 @@ app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
     //should respond with the spell with the corresponding id value from data.json    
+    const { id } = req.params;
+    const response = ApiData.spells.find((data) => {return Number(id) === data.id});
+    res.json(response);
 });
 
 app.get('/characters', (req, res) => {
