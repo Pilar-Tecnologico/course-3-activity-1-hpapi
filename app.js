@@ -15,6 +15,18 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    let { hogwartsStudent, hogwartsHouse } = req.query;
+
+    if(hogwartsHouse && hogwartsStudent){
+        const filteredCharacters = ApiData.characters.filter(Character => (Character.hogwartsStudent == (hogwartsStudent === 'true') && Character.hogwartsHouse === hogwartsHouse));
+        res.send(filteredCharacters);    
+    }
+    else{
+        res.status(400)
+        res.json({
+            message: 'cannot find these Students'
+        })
+    }
 });
 
 app.post('/spells', (req, res) => {
@@ -22,6 +34,8 @@ app.post('/spells', (req, res) => {
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+
+
 });
 
 app.listen(port, () => {
