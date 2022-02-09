@@ -7,14 +7,35 @@ const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
+    const { id } = req.params;
+    const response = ApiData['spells'].find(spell => Number(id) === spell.id);
+    res.json(response); 
     //should respond with the spell with the corresponding id value from data.json    
 });
 
 app.get('/characters', (req, res) => {
+    const { hogwartsStudent, hogwartsHouse } = req.query;
+    if(hogwartsStudent&&hogwartsHouse){
+    const response = ApiData['characters'].filter(char => hogwartsStudent === char.hogwartsStudent.toString() && hogwartsHouse === char.hogwartsHouse);
+    res.json(response);
+    } else {
+         res.status(400).json({
+            code: 'bad_request',
+            message: 'Invalid request, check your query params',
+            severity: 'LOW'
+        });
+    }
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
 });
 
 app.post('/spells', (req, res) => {
+    const data = req.body;
+    if(data.id && data.spell && data.use){
+        res.json({"operation": "add spell", "status": "accepted"
+        });
+    } else {
+        res.status(400).json({"operation": "add spell", "status": "refused"});
+    }
     //Should recive spell data from request body.
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
