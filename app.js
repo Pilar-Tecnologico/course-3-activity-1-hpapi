@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
     //should respond with the spell with the corresponding id value from data.json    
-    res.send('TEST')
+    res.send('TEST');
 });
 
 app.get('/characters', (req, res) => {
