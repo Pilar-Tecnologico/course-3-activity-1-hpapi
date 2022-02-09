@@ -12,13 +12,24 @@ app.get('/spells/:id', (req, res) => {
     //res.send(ApiData.spells[id]);
     res.send(ApiData.spells.filter(e=>e.id==id))
 });
-
+/*
 app.get('/spells', (req, res) => {
     //should respond with the spell with the corresponding id value from data.json    
     res.send(ApiData.spells);
 });
+*/
+app.get('/characters/:student/:house', (req, res) => {
+    //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const {student} = req.params;
+    let isStudent = false;
+    if(student=="true"){
+        isStudent=true;
+    }
+    const {house} = req.params;
+    res.send(ApiData.characters.filter(e=>e.hogwartsStudent==isStudent&&e.hogwartsHouse==house));
+});
 
-app.get('/characters', (req, res) => {
+app.get('/characters/:student/:house', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
 });
 
