@@ -21,6 +21,8 @@ app.post('/spells', (req, res) => {
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
 });
 
+//test
+
 app.listen(port, () => {
     console.log(`Express server started at port ${port}`)
 });
