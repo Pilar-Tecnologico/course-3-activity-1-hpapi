@@ -11,9 +11,16 @@ app.get('/spells/:id', (req, res) => {
     res.send('TEST');
 });
 
+app.get('/spells', (req, res) => {
+    //should respond with the spell with the corresponding id value from data.json    
+    res.send('TEST');
+});
+
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
 });
+
+//update
 
 app.post('/spells', (req, res) => {
     //Should recive spell data from request body.
