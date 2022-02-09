@@ -12,31 +12,36 @@ app.get('/spells/:id', (req, res) => {
     //res.send(ApiData.spells[id]);
     res.send(ApiData.spells.filter(e=>e.id==id))
 });
-/*
-app.get('/spells', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
-    res.send(ApiData.spells);
-});
-*/
-app.get('/characters/:student/:house', (req, res) => {
+
+app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
-    const {student} = req.params;
+    const {student,house} = req.query;
     let isStudent = false;
-    if(student=="true"){
-        isStudent=true;
+    // if(student=="true"){
+    //     isStudent=true;
+    // }
+    // res.send(req.params);
+    // res.send(ApiData.characters.filter(e=>e.hogwartsStudent==isStudent&&e.hogwartsHouse==house));
+
+    if(student&&house){
+        if(student=="false"){
+            isStudent=false;
+        }else if(student=="true"){
+            isStudent=true;
+        }
+        const response = ApiData.characters.filter(char=>house===char.hogwartsHouse&&isStudent==char.hogwartsStudent);
+        res.json(response);
+    }else{
+        res.status(400).json({
+            code: 'bad_request',
+            messaage: 'Invalid request, check your query params',
+            severity: 'LOW'
+        });
     }
-    const {house} = req.params;
-    res.send(ApiData.characters.filter(e=>e.hogwartsStudent==isStudent&&e.hogwartsHouse==house));
 });
-
-app.get('/characters/:student/:house', (req, res) => {
-    //Should use query params to filter the hogwartsHouse and hogwartsStudent
-});
-
-//update
 
 app.post('/spells', (req, res) => {
-    //Should recive spell data from request body.
+    //Should recieve spell data from request body.
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
