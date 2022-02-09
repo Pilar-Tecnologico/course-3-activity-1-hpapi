@@ -42,6 +42,22 @@ app.get('/characters', (req, res) => {
 
 app.post('/spells', (req, res) => {
     //Should recieve spell data from request body.
+    const data = req.body;
+
+    if(data.id&&data.spell&&data.use){
+        const response = {"operation": "add spell", "status": "accepted"}
+        res.status(200).json({
+            code: 'good_request',
+            messaage: 'valid request',
+            severity: 'LOW'
+        });
+    }else{
+        res.status(400).json({
+            code: 'bad_request',
+            messaage: 'Invalid request, check your query params',
+            severity: 'LOW'
+        });
+    }
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
