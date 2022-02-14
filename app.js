@@ -6,8 +6,16 @@ const port = process.env.PORT || 3000;
 const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
+app.get('/', (req, res) => {
+   console.log(ApiData)  
+   res.json(ApiData)
+});
+
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+    //should respond with the spell with the corresponding id value from data.json  
+    const {id}=req.params
+    const data= ApiData.spells.find(element => element.id === parseInt(id))
+    res.json(data)  
 });
 
 app.get('/characters', (req, res) => {
