@@ -20,6 +20,25 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const { hogwartsStudent, hogwartsHouse } = req.query;
+    if(hogwartsHouse && hogwartsStudent){
+        const data = ApiData.characters.filter(hogwarts => (hogwarts.hogwartsStudent == (hogwartsStudent === 'true') && hogwarts.hogwartsHouse === hogwartsHouse));
+        if(data.length>0){
+            res.status(200).json(data);
+        }
+        else{
+            res.status(400).json({
+                code: 'bad_request',
+                message:'Could not find your hogwartsStudent and hogwartsHouse values.'
+        });
+       }        
+    }
+    else{
+        res.status(400).json({
+            code: 'bad_request',
+            message:'Check your hogwartsStudent and hogwartsHouse parameters.'
+        });
+    }
 });
 
 app.post('/spells', (req, res) => {
