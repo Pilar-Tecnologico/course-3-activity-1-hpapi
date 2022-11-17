@@ -1,5 +1,6 @@
 //Change the version of this program in package.json to 1.1.0
 //For all the excersices Postman or Thunder Client is recommended.
+const { query } = require('express');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,9 +14,22 @@ app.get('/spells/:id', (req, res) => {
     res.json(spell);
 });
 
+
+
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const {hogwartsStudent, hogwartsHouse} = req.query;
+    const character = ApiData.characters.filter((character)=>{
+        if(hogwartsStudent){
+            return character.hogwartsStudent == JSON.parse(hogwartsStudent);
+        }if(hogwartsHouse){
+            return character.hogwartsHouse == hogwartsHouse;   
+        }         
+    })
+    res.json(character);
 });
+
+
 
 app.post('/spells', (req, res) => {
     //Should recive spell data from request body.
