@@ -3,12 +3,13 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const ApiData = require('./data.json');//should require the data.json file
+const spellsApiRouter = require('./routes/api/spellsApiRoutes');
+
 app.use(express.json());
 
-app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
-});
+
+app.use('/spells', spellsApiRouter);
+      
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
