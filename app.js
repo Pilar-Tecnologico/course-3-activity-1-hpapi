@@ -15,6 +15,12 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const { hogwartsStudent, hogwartsHouse } = req.query;
+    const outPut = (hogwartsStudent.toLowerCase() === "true"); // returns true
+    if (!outPut) return res.status(400).send({ msj: 'The entered value is incorrect.' });
+    const result = ApiData.characters.filter(
+        (character) => { return character.hogwartsHouse === hogwartsHouse && character.hogwartsStudent === outPut });
+    res.json(result)
 });
 
 app.post('/spells', (req, res) => {
