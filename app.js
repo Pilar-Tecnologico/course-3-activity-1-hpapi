@@ -28,6 +28,20 @@ app.post('/spells', (req, res) => {
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+    const { id, spell, use } = req.body;
+    if (!id || !spell || !use)
+        return res.status(400).send({
+            msj: 'The spell must have an id, spell and use.',
+        });
+    const result = ApiData.spells.find((spell) => spell.id === parseInt(id));
+    if (result) return res.status(400).send({ msj: '"operation": "add spell", "status": "refused"' });
+    const newSpell = {
+        id: +id,
+        spell: spell,
+        use: use,
+    };
+    ApiData.spells.push(newSpell);
+    res.status(200).send({ msj: '"operation": "add spell", "status": "accepted"' });
 });
 
 app.listen(port, () => {
