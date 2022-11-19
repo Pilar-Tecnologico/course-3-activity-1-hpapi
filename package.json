@@ -1,6 +1,6 @@
 {
   "name": "harry-potter-express-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "First activity for the Pilar Tecno #2 Node course",
   "main": "app.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Marcos Peña Pollastri",
+  "author": "Dario Enrique Marconi",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1"
