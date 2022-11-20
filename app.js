@@ -7,20 +7,52 @@ const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+  //should respond with the spell with the corresponding id value from data.json
+  const { id } = req.params;
+  const spell = ApiData.spells.filter((spells) => spells.id == id);
+  res.json(spell);
 });
 
+
+
 app.get('/characters', (req, res) => {
-    //Should use query params to filter the hogwartsHouse and hogwartsStudent
+  //Should use query params to filter the hogwartsHouse and hogwartsStudent
+  const { hogwartsStudent, hogwartsHouse } = req.query;
+
+  if (!hogwartsStudent && !hogwartsHouse) {
+    res.json(ApiData.characters);
+  }
+
+  const character = ApiData.characters.filter((character) => {
+    return character.hogwartsStudent == hogwartsStudent ||
+      character.hogwartsHouse == hogwartsHouse
+  })
+
+  res.json(character);
+
 });
 
 app.post('/spells', (req, res) => {
-    //Should recive spell data from request body.
-    //Should validate that the properities "id", "spell" and "use" are present in the body
-    //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
-    //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+  //Should recive spell data from request body.
+  //Should validate that the properities "id", "spell" and "use" are present in the body
+  //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
+  //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+
+  const data = req.body;
+  if (!data.id || !data.spell || !data.use) {
+    res.status(400).json({
+      operation: "add spell",
+      status: "refused"
+    })
+  } else {
+    res.status(200).json({
+      operation: "add spell",
+      status: "accepted"
+    })
+  }
+  ApiData.spells.push(data)
 });
 
 app.listen(port, () => {
-    console.log(`Express server started at port ${port}`)
+  console.log(`Express server started at port ${port}`)
 });
