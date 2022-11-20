@@ -28,6 +28,40 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
   //Should use query params to filter the hogwartsHouse and hogwartsStudent
+  try {
+    const { hogwartsStudent, hogwartsHouse } = req.query;
+    let resp;
+
+    if (hogwartsHouse && hogwartsStudent) {
+      resp = ApiData.characters.filter(
+        (character) =>
+          (hogwartsHouse === character.hogwartsHouse &&
+            !!hogwartsStudent === character.hogwartsStudent) ||
+          hogwartsHouse === character.hogwartsHouse,
+      );
+
+      if (!resp.length) {
+        throw new Error('No match found', {
+          cause: {
+            code: 400,
+            description: 'bad_request',
+            querys: { hogwartsHouse, hogwartsStudent },
+          },
+        });
+      }
+    } else {
+      throw new Error('lack of query parameters', {
+        cause: { code: 400 },
+      });
+    }
+
+    res.status(200).json({ succes: true, characters: resp });
+  } catch (err) {
+    res.status(400).json({
+      menssage: err.message,
+      cause: err.cause,
+    });
+  }
 });
 
 app.post('/spells', (req, res) => {
