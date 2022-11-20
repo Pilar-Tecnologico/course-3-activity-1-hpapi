@@ -1,5 +1,6 @@
 //Change the version of this program in package.json to 1.1.0
 //For all the excersices Postman or Thunder Client is recommended.
+const { query } = require('express');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -7,7 +8,10 @@ const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+    //should respond with the spell with the corresponding id value from data.json  
+    const {id} = req.params;
+    const spell = ApiData.spells.find((spells)=>spells.id == id);
+    res.json(spell);  
 });
 
 app.get('/characters', (req, res) => {
