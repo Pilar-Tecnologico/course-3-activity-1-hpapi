@@ -69,6 +69,27 @@ app.post('/spells', (req, res) => {
   //Should validate that the properities "id", "spell" and "use" are present in the body
   //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
   //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
+  const { spell, use } = req.body;
+  try {
+    const spells = ApiData.spells;
+
+    if (spell && use) {
+      const id = spells.length + 1;
+      const sendSpell = spells.push({ id, spell, use }) - 1;
+      const newSpell = spells[sendSpell];
+      res.status(200).json({ operation: 'add spell', status: 'accepted', spell: newSpell });
+    } else {
+      throw new Error('syntax error', {
+        cause: {
+          code: 400,
+          description: 'bad_request',
+          querys: { hogwartsHouse, hogwartsStudent },
+        },
+      });
+    }
+  } catch (err) {
+    res.status(400).json({ operation: 'add spell', status: 'refused', cause: err.cause });
+  }
 });
 
 app.listen(port, () => {
