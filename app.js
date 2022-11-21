@@ -7,11 +7,20 @@ const ApiData = require('./data.json');//should require the data.json file
 app.use(express.json());
 
 app.get('/spells/:id', (req, res) => {
-    //should respond with the spell with the corresponding id value from data.json    
+    //should respond with the spell with the corresponding id value from data.json  
+    const { id } = req.params;
+    const spells = ApiData.spells.find((spells) => spells.id == id);
+    res.json (spells)  
 });
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const filter = req.query;
+    const results = ApiData.characters.filter((characters) => 
+        characters.hogwartsHouse == filter.hogwartsHouse &&
+         characters.hogwartsStudent ==  JSON.parse(filter.hogwartsStudent)
+    )
+    res.json(results);
 });
 
 app.post('/spells', (req, res) => {
