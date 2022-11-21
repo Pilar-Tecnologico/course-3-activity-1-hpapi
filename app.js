@@ -4,23 +4,12 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const spellsApiRouter = require('./routes/api/spellsApiRoutes');
-
+const charactersApiRouter = require('./routes/api/charactersApiRoutes');
 app.use(express.json());
-
 
 app.use('/spells', spellsApiRouter);
       
-
-app.get('/characters', (req, res) => {
-    //Should use query params to filter the hogwartsHouse and hogwartsStudent
-});
-
-app.post('/spells', (req, res) => {
-    //Should recive spell data from request body.
-    //Should validate that the properities "id", "spell" and "use" are present in the body
-    //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
-    //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
-});
+app.use('/characters', charactersApiRouter);
 
 app.listen(port, () => {
     console.log(`Express server started at port ${port}`)
