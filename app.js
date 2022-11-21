@@ -16,18 +16,17 @@ app.get('/spells/:id', (req, res) => {
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
     const {hogwartsHouse,hogwartsStudent} = req.query;
-    if(!hogwartsHouse && !hogwartsStudent){
-        res.json(ApiData.characters);
-    }
+   
     const result = ApiData.characters.filter((result) => {
+        if(!hogwartsHouse && !hogwartsStudent){
+            return result.character
+        }
         if(hogwartsHouse){
             return result.hogwartsHouse == hogwartsHouse;
         } 
         if(hogwartsStudent){
             return result.hogwartsStudent == JSON.parse(hogwartsStudent);
         }
-        
-
     })
     res.json(result)
 
