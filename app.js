@@ -15,6 +15,18 @@ app.get('/spells/:id', (req, res) => {
 
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    let { hogwartsStudent, hogwartsHouse } = req.query;
+
+    if(hogwartsHouse && hogwartsStudent){
+        const result = ApiData.characters.filter(Character => (Character.hogwartsStudent == (hogwartsStudent === 'true') && Character.hogwartsHouse === hogwartsHouse));
+        res.send(result);    
+    }
+    else{
+        res.status(400)
+        res.json({
+            message: 'Home and Student not fount'
+        })
+    }
 });
 
 app.post('/spells', (req, res) => {
