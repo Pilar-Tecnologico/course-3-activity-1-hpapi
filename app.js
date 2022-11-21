@@ -13,8 +13,23 @@ app.get('/spells/:id', (req, res) => {
     res.json(spell)
 });
 
+//i added this query so i can see the full list of spells, for debug
+app.get('/spells', (req, res) =>{
+    res.json(ApiData.spells);
+})
+
 app.get('/characters', (req, res) => {
     //Should use query params to filter the hogwartsHouse and hogwartsStudent
+    const {hogwartsHouse, hogwartsStudent} = req.query;
+    if (!hogwartsHouse || !hogwartsStudent){
+        res.json(ApiData.characters);
+    }
+    const check = ApiData.characters.filter((character) => {
+        return character.hogwartsStudent == JSON.parse(hogwartsStudent) ||
+            character.hogwartsHouse == hogwartsHouse;
+    })
+   
+    res.json(check);
 });
 
 app.post('/spells', (req, res) => {
