@@ -20,8 +20,13 @@ app.get('/characters', (req, res) => {
         res.json(ApiData.characters);
     }
     const result = ApiData.characters.filter((result) => {
-        return result.hogwartsHouse == hogwartsHouse ||
-            result.hogwartsStudent == JSON.parse(hogwartsStudent);
+        if(hogwartsHouse){
+            return result.hogwartsHouse == hogwartsHouse;
+        } 
+        if(hogwartsStudent){
+            return result.hogwartsStudent == JSON.parse(hogwartsStudent);
+        }
+        
 
     })
     res.json(result)
