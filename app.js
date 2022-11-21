@@ -37,8 +37,17 @@ app.post('/spells', (req, res) => {
     //Should validate that the properities "id", "spell" and "use" are present in the body
     //Response should be {"operation": "add spell", "status": "accepted"} with status 200 if all the valid properities are present
     //Response should be {"operation": "add spell", "status": "refused"} with status 400 if there is any properitie missing.
-    const data = req.body;
-    ApiData.spells.push(data);
+    const {id, spell, use} = req.body;
+    if(!id || !spell || !use){
+        res.status(400).json({operation: "add spell", status: "refused"})
+    };
+    const newSpell = {
+		id: +id,
+		spell: spell,
+		use: use,
+    };
+    ApiData.spells.push(newSpell);
+    res.status(200).json({operation: "add spell", status: "accepted"});
     
 });
 
